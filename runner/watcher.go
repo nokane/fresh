@@ -40,7 +40,7 @@ func watch() {
 	root := root()
 	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		watcherLog("Trying to watch path: %s", path)
-		if info.IsDir() && !isTmpDir(path) {
+		if (info.IsDir() && !isTmpDir(path)) || path == "router.go" || path == "main.go" {
 			if len(path) > 1 && strings.HasPrefix(filepath.Base(path), ".") {
 				watcherLog("SKIPPING THIS PATH FROM PREFIX: %s", path)
 				return filepath.SkipDir
