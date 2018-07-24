@@ -19,7 +19,7 @@ func watchFolder(path string) {
 			select {
 			case ev := <-watcher.Event:
 				if isWatchedFile(ev.Name) {
-					watcherLog("sending event %s", ev)
+					// watcherLog("sending event %s", ev)
 					startChannel <- ev.String()
 				}
 			case err := <-watcher.Error:
@@ -39,9 +39,10 @@ func watchFolder(path string) {
 func watch() {
 	root := root()
 	filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
-		watcherLog("Checking this path: %s", path)
+		watcherLog("Trying to watch path: %s", path)
 		if info.IsDir() && !isTmpDir(path) {
 			if len(path) > 1 && strings.HasPrefix(filepath.Base(path), ".") {
+				watcherLog("SKIPPING THIS PATH FROM PREFIX: %s", path)
 				return filepath.SkipDir
 			}
 
